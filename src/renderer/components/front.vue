@@ -6,7 +6,7 @@
       <el-radio v-model="radio" label="1">备选项</el-radio>
   <el-radio v-model="radio" label="2">备选项</el-radio>
     <ul class="component-list">
-      <router-link v-for="(item, index) in routerArr" :key="index" :to="{ path: '/' + item}"  tag="li">
+      <router-link class="item" v-for="(item, index) in routerArr" :key="index" :to="{ path: '/' + item}"  tag="li">
         {{item}}
       </router-link>
     </ul>
@@ -36,8 +36,12 @@ export default {
       color: rgb(14, 90, 48);
       font-size: 36px;
       // font-style: oblique;
-      font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+      // font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     }
+  }
+  .item {
+    cursor: pointer;
+    color: blue;
   }
   .component-list {
     font-size: 24px;

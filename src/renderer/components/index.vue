@@ -3,10 +3,10 @@
     <div class="head"
       id="head"
       ref="head">
-      <span @click="back()">玩具店</span>
+      <span class="awesome-lab" @click="back()">AWESOME-LAB</span>
       <router-link class="btn" v-for="(item, index) in btnArr" :key="index" :to="{ path: '/' + item }" tag="div">
         {{item}}
-        <i @click.stop="deleteRoute(item)">✘</i>
+        <span @click.stop="deleteRoute(item)">x</span>
       </router-link>
     </div>
     <div class="main">
@@ -23,7 +23,7 @@ export default {
       btnArr: []
     }
   },
-        // v-show="isShowHead" 
+  // v-show="isShowHead"
   // computed: {
   //   isShowHead () {
   //     return this.$router.currentRoute.fullPath === '/'
@@ -38,13 +38,13 @@ export default {
         for (let i = 0; i < arr.length; i++) {
           if (arr[i] === it) {
             let lastPath = '/' + (arr[i - 1] ? arr[i - 1] : '')
-            self.$router.push({ path: lastPath})
+            self.$router.push({path: lastPath})
             for (let j = i; j < arr.length - 1; j++) {
               arr[j] = arr[j + 1]
             }
             arr.pop()
             return
-          } 
+          }
         }
       }
       deleteI(this.btnArr, item, this)
@@ -66,7 +66,7 @@ export default {
           this.btnArr.push(path)
         }
       }
-      this.isShowHead = to.fullPath === '/' ? false : true
+      this.isShowHead = to.fullPath !== '/'
     }
   }
 }
@@ -79,22 +79,28 @@ export default {
   }
   .head {
     text-align: left;
-    background: brown;
-    height: 48px;
-    span {
+    background: rgb(126, 126, 126);
+    .awesome-lab {
+      margin-left: 36px;
       color: #fff;
-      font-size: 28px;
+      font-size: 24px;
       line-height: 48px;
-      font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     }
     .btn {
       cursor: pointer;
       display: inline;
       font-size: 20px;
-      background: rgb(128, 34, 34);
+      background: rgb(255, 255, 255);
       padding: 3px 8px;
       border-radius: 5px;
       margin: 0 3px;
+      span {
+        display: inline-block;
+        margin: auto;
+        width: 20px;
+        border-radius: 10px;
+        background: rgb(204, 204, 204);
+      }
     }
   }
   .component-list {
