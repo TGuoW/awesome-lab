@@ -7,10 +7,11 @@ const { say } = require('cfonts')
 const { spawn } = require('child_process')
 const webpack = require('webpack')
 const WebpackDevServer = require('webpack-dev-server')
+const openInEditor = require('launch-editor-middleware')
 const webpackHotMiddleware = require('webpack-hot-middleware')
 
 const mainConfig = require('./webpack.main.config')
-const rendererConfig = require('./webpack.renderer.config')
+const Configs = require('./webpack.renderer.config')
 
 let electronProcess = null
 let manualRestart = false
@@ -40,31 +41,42 @@ function logStats (proc, data) {
 
 function startRenderer () {
   return new Promise((resolve, reject) => {
-    rendererConfig.entry.renderer = [path.join(__dirname, 'dev-client')].concat(rendererConfig.entry.renderer)
-    rendererConfig.mode = 'development'
-    const compiler = webpack(rendererConfig)
-    hotMiddleware = webpackHotMiddleware(compiler, {
-      log: false,
+    Configs.forEach((config) => {
+      if (config.name !== 'preloads') {
+        Object.keys(config.entry).forEach(key => {
+          config.entry[key] = [path.join(__dirname, `dev-client-${key}`)].concat(config.entry[key])
+        });
+      }
+    })
+
+    const multiCompiler = webpack(Configs)
+    hotMiddleware = webpackHotMiddleware(multiCompiler, {
+      logLevel: 'warn',
       heartbeat: 2500
     })
 
-    compiler.hooks.compilation.tap('compilation', compilation => {
-      compilation.hooks.htmlWebpackPluginAfterEmit.tapAsync('html-webpack-plugin-after-emit', (data, cb) => {
-        hotMiddleware.publish({ action: 'reload' })
-        cb()
-      })
+    multiCompiler.compilers.map(c => {
+      if (c.name !== 'preloads') {
+        c.hooks.compilation.tap('dev-runner', compilation => {
+          compilation.hooks.htmlWebpackPluginAfterEmit.tapAsync('dev-runner', (data, cb) => {
+            hotMiddleware.publish({ action: 'reload' })
+            cb()
+          })
+        })
+      }
     })
 
-    compiler.hooks.done.tap('done', stats => {
+    multiCompiler.compilers.map(c => c.hooks.done.tap('dev-runner', stats => {
       logStats('Renderer', stats)
-    })
+    }))
 
     const server = new WebpackDevServer(
-      compiler,
+      multiCompiler,
       {
         contentBase: path.join(__dirname, '../'),
         quiet: true,
-        before (app, ctx) {
+        before(app, ctx) {
+          app.use('/__open-in-editor', openInEditor())
           app.use(hotMiddleware)
           ctx.middleware.waitUntilValid(() => {
             resolve()
@@ -79,11 +91,11 @@ function startRenderer () {
 
 function startMain () {
   return new Promise((resolve, reject) => {
-    mainConfig.entry.main = [path.join(__dirname, '../src/main/index.dev.js')].concat(mainConfig.entry.main)
-    mainConfig.mode = 'development'
+    mainConfig.entry.main = [path.join(__dirname, '../src/main/index.dev.ts')].concat(mainConfig.entry.main)
+
     const compiler = webpack(mainConfig)
 
-    compiler.hooks.watchRun.tapAsync('watch-run', (compilation, done) => {
+    compiler.hooks.watchRun.tapAsync('dev-runner', (compilation, done) => {
       logStats('Main', chalk.white.bold('compiling...'))
       hotMiddleware.publish({ action: 'compiling' })
       done()
@@ -114,8 +126,7 @@ function startMain () {
 }
 
 function startElectron () {
-  electronProcess = spawn(electron, ['--inspect=5858', path.join(__dirname, '../dist/electron/main.js')])
-
+  electronProcess = spawn(electron, ['--inspect=9222', path.join(__dirname, '../dist/main.js')])
   electronProcess.stdout.on('data', data => {
     electronLog(data, 'blue')
   })
@@ -149,8 +160,8 @@ function greeting () {
   const cols = process.stdout.columns
   let text = ''
 
-  if (cols > 104) text = 'electron-vue'
-  else if (cols > 76) text = 'electron-|vue'
+  if (cols > 104) text = 'lulumi-browser'
+  else if (cols > 76) text = 'lulumi-|browser'
   else text = false
 
   if (text) {
@@ -159,7 +170,7 @@ function greeting () {
       font: 'simple3d',
       space: false
     })
-  } else console.log(chalk.yellow.bold('\n  electron-vue'))
+  } else console.log(chalk.yellow.bold('\n  lulumi-browser'))
   console.log(chalk.blue('  getting ready...') + '\n')
 }
 

@@ -1,22 +1,24 @@
 module.exports = {
   root: true,
-  parser: 'babel-eslint',
+  parser: "babel-eslint",
   parserOptions: {
-    sourceType: 'module'
+    sourceType: "module"
   },
   env: {
     browser: true,
     node: true
   },
-  extends: 'standard',
+  extends: "airbnb-base",
   globals: {
     __static: true
   },
   plugins: [
-    'html'
+    "html"
   ],
-  'rules': {
-    // allow paren-less arrow functions
+  "rules": {
+    "global-require": 0,
+    "import/no-unresolved": 0,
+    "import/extensions": 0,
     'arrow-parens': 0,
     // allow async-await
     'generator-star-spacing': 0,

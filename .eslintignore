@@ -1,3 +1,6 @@
+helper/api/**
+helper/pdfjs/**
 test/unit/coverage/**
 test/unit/*.js
 test/e2e/*.js
+**
