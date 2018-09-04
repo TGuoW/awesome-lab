@@ -133,11 +133,17 @@ export default {
       }
     },
     solve () {
+      let str = this.inputText.split('')
+      let endResult = this.solveString(str)
+      this.outputText = [this.inputText + '=', endResult[0]]
+      this.inputText = '0'
+    },
+    solveString (res) {
       let output = []
       let input = ['#']
       let isp = {'#': 0, '(': 1, '×': 5, '÷': 5, '+': 3, '-': 3, ')': 6, '√': 0.5}
       let icp = {'#': 0, '(': 6, '×': 4, '÷': 4, '+': 2, '-': 2, ')': 1, '√': 7}
-      let res = this.inputText.split('')
+      // let res = this.inputText.split('')
       let result = []
       let endResult = []
       for (let i = 0; i < res.length; i) {
@@ -156,11 +162,13 @@ export default {
         if (!isNaN(result[i]) || result[i] === '²') {
           output.push(result[i])
         } else if (isp[input[input.length - 1]] < icp[result[i]]) {
+          // console.log(...input)
           input.push(result[i])
         } else if (isp[input[input.length - 1]] > icp[result[i]]) {
           if (isp[input[input.length - 1]] > icp[result[i]]) {
             let t = input.pop()
             output.push(t)
+            i--
           }
           if (isp[input[input.length - 1]] === icp[result[i]]) {
             input.pop()
@@ -171,9 +179,8 @@ export default {
         } else if (isp[input[input.length - 1]] === icp[result[i]]) {
           input.pop()
         }
-        // console.log([...input])
       }
-      console.log(output)
+      // console.log(output)
       for (let i = 0; i < output.length; i++) {
         console.log([...endResult])
         if (!isNaN(output[i])) {
@@ -240,9 +247,8 @@ export default {
         }
         // console.log([...endResult])
       }
-      console.log(endResult)
-      this.outputText = [this.inputText + '=', endResult[0]]
-      this.inputText = '0'
+      // console.log(endResult)
+      return endResult
     }
   },
   // props: ['inputText'],

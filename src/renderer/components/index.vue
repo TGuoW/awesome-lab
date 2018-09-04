@@ -79,8 +79,9 @@ export default {
   }
   .head {
     text-align: left;
-    background: rgb(126, 126, 126);
+    background: rgb(44, 171, 230);
     .awesome-lab {
+      cursor: pointer;
       margin-left: 36px;
       color: #fff;
       font-size: 24px;
@@ -98,8 +99,11 @@ export default {
         display: inline-block;
         margin: auto;
         width: 20px;
-        border-radius: 10px;
+        text-align: center;
         background: rgb(204, 204, 204);
+        &:hover {
+          background: rgb(151, 151, 151);
+        }
       }
     }
   }

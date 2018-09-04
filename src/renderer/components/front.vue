@@ -1,15 +1,15 @@
 <template>
   <div>
-    <div class="head">
-      <span>玩具店</span>
+    <div class="main">
+      <div class="left item">
+        <ul class="component-list">
+          <router-link class="item" v-for="(item, index) in routerArr" :key="index" :to="{ path: '/' + item}"  tag="li">
+            {{item}}
+          </router-link>
+        </ul>
+      </div>
+      <div class="right item"></div>
     </div>
-      <el-radio v-model="radio" label="1">备选项</el-radio>
-  <el-radio v-model="radio" label="2">备选项</el-radio>
-    <ul class="component-list">
-      <router-link class="item" v-for="(item, index) in routerArr" :key="index" :to="{ path: '/' + item}"  tag="li">
-        {{item}}
-      </router-link>
-    </ul>
   </div>
 </template>
 
@@ -31,7 +31,7 @@ export default {
 <style lang="scss" scoped>
   .head {
     text-align: center;
-    background: rgb(255, 255, 255);
+    background: rgb(17, 159, 253);
     span {
       color: rgb(14, 90, 48);
       font-size: 36px;
@@ -39,9 +39,14 @@ export default {
       // font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     }
   }
+  .main {
+    margin-top: 48px;
+  }
   .item {
+    text-align: left;
     cursor: pointer;
-    color: blue;
+    padding: 0 16px;
+    color: rgb(39, 39, 39);
   }
   .component-list {
     font-size: 24px;
