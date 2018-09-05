@@ -71,7 +71,7 @@ let mainBrowserWindowConfig = {
         use: {
           loader: 'happypack/loader?id=happy-ts'
         },
-        include: [ path.join(__dirname, '../src/shared'), path.join(__dirname, '../src/renderer/lib'), path.join(__dirname, '../src/renderer/mainBrowserWindow'), path.join(__dirname, '../src/renderer/api') ],
+        include: [ path.join(__dirname, '../src/shared'), path.join(__dirname, '../src/renderer/mainBrowserWindow') ],
         exclude: /node_modules/
       },
       {
@@ -80,7 +80,7 @@ let mainBrowserWindowConfig = {
         use: {
           loader: 'happypack/loader?id=happy-eslint'
         },
-        include: [ path.join(__dirname, '../src/helper') ],
+        include: [ ],
         exclude: /node_modules/
       },
       {
@@ -131,7 +131,6 @@ let mainBrowserWindowConfig = {
         },
         include: [
           path.join(__dirname, '../src/renderer/mainBrowserWindow'),
-          path.join(__dirname, '../node_modules/iview/src/components/icon'),
           path.join(__dirname, '../node_modules/vue-awesome/components')
         ]
       },
@@ -256,8 +255,6 @@ let mainBrowserWindowConfig = {
       'components': path.join(__dirname, '../src/renderer/mainBrowserWindow/components'),
       'renderer': path.join(__dirname, '../src/renderer/mainBrowserWindow'),
       'shared': path.join(__dirname, '../src/shared'),
-      'i18n': path.join(__dirname, '../src/helper/i18n'),
-      'extensions': path.join(__dirname, '../extensions'),
       'vue$': 'vue/dist/vue.runtime.esm.js'
     },
     extensions: ['.ts', '.js', '.vue', '.json', '.css', '.less', '.pug']

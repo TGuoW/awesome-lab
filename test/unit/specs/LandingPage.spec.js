@@ -7,6 +7,6 @@ describe('LandingPage.vue', () => {
       el: document.createElement('div'),
       render: h => h(LandingPage),
     }).$mount();
-    expect(vm.$el.querySelector('.title').textContent).to.contain('Welcome to asdas your new project!');
+    expect(vm.$el.querySelector('.title').textContent).to.contain('Welcome to your new project!');
   });
 });

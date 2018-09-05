@@ -26,7 +26,7 @@
     "e2e": "yarn run pack:e2e && ava",
     "unit:renderer": "karma start test/unit/renderer.karma.conf.js",
     "unit:about": "karma start test/unit/about.karma.conf.js",
-    "unit": "karma start test/unit/karma.conf.js",
+    "unit": "karma start test/unit/karma.conf.js --single-run",
     "test": "yarn run unit && yarn run e2e",
     "postinstall": "yarn run lint:fix"
   },
