@@ -1,0 +1,219 @@
+* {
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+}
+
+html {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  font-size: 14px;
+  /* line-height: 1.4; */
+  background: #fff;
+  overflow: auto;
+}
+
+img {
+  border: 0;
+}
+
+ul, li {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+a, a:active {
+  text-decoration: none;
+  color: inherit;
+}
+
+input, textarea {
+  outline: none;
+  border: none;
+  background-color: inherit;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+}
+
+/********************元素展示**************************/
+/*隐藏不占位*/
+.hidden {
+  display: none !important;
+}
+
+/*隐藏占位*/
+.visibility {
+  visibility: hidden !important;
+}
+
+/*不显示*/
+.opacity {
+  opacity: 0 !important;
+}
+
+.opacityShow {
+  opacity: 1 !important;
+}
+
+/*************************浮动*************************/
+/*清除浮动*/
+.clearfix:after {
+  content: "";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
+}
+
+.clearfix {
+  *zoom: 1;
+}
+
+.fl {
+  float: left;
+}
+
+.fr {
+  float: right;
+}
+
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: relative;
+}
+
+/**************************元素转换***********************/
+.db {
+  display: block;
+}
+
+.dib {
+  display: inline-block;
+}
+
+.of-hidden {
+  overflow: hidden;
+}
+
+/****************设置盒子里的行内元素或文字表现*****************/
+
+/*行内元素排向*/
+.txt-c {
+  text-align: center !important;
+}
+
+.txt-l {
+  text-align: left !important;
+}
+
+.txt-r {
+  text-align: right !important;
+}
+
+.va-t {
+  vertical-align: top;
+}
+
+.va-b {
+  vertical-align: bottom;
+}
+
+.va-m {
+  vertical-align: middle;
+}
+
+/*强制不换行*/
+.nowrap {
+  white-space: nowrap;
+}
+
+/*自动换行*/
+.normalBreak {
+  word-wrap: break-word;
+  word-break: normal;
+}
+
+/*强制英文单词断行*/
+.breakAll {
+  word-break: break-all;
+}
+
+/*文字省略号*/
+.ellipsisBox {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+}
+
+/*文字省略号行数，配合ellipsisBox使用*/
+.eBLine-1 {
+  -webkit-line-clamp: 1;
+}
+
+.eBLine-2 {
+  -webkit-line-clamp: 2;
+}
+
+/*布局*/
+.flex {
+  display: flex;
+}
+
+.flex-auto {
+  flex: auto
+}
+
+.flex-none {
+  flex: none
+}
+
+/*表格样式*/
+.table-header th {
+  background-color: #f5f7fa !important;
+}
+
+
+/*颜色*/
+.info {
+  color: #909399;
+}
+
+.danger {
+  color: #F56C6C;
+}
+
+.primary {
+  color: #409EFF;
+}
+
+.remark {
+  margin: 20px 0 5px;
+  font-size: 14px;
+}
+
+.remark-indent {
+  text-indent: 1em;
+}

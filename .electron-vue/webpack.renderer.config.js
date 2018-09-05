@@ -89,6 +89,10 @@ let mainBrowserWindowConfig = {
         include: [ path.join(__dirname, '../src/renderer/mainBrowserWindow') ]
       },
       {
+        test: /\.scss$/,
+        loaders: ['style-loader', 'css-loader', 'sass-loader']
+      },
+      {
         test: /\.css$/,
         use: returnCss,
         include: [
@@ -124,8 +128,10 @@ let mainBrowserWindowConfig = {
         use: {
           loader: 'vue-loader',
           options: {
+            extractCSS: process.env.NODE_ENV === 'production',
             loaders: {
-              js: ''
+              sass: 'vue-style-loader!css-loader!sass-loader?indentedSyntax=1',
+              scss: 'vue-style-loader!css-loader!sass-loader'
             }
           }
         },
@@ -169,6 +175,7 @@ let mainBrowserWindowConfig = {
     __filename: process.env.NODE_ENV !== 'production'
   },
   plugins: [
+    // new ExtractTextPlugin('styles.css'),
     new MiniCssExtractPlugin({
       filename: '[name].css'
     }),

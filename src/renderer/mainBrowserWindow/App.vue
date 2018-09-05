@@ -7,47 +7,44 @@
 <script>
 export default {
   name: 'lulumi-browser',
-};
+  mounted () {
+    (function (doc, win) {
+      let docEl = doc.documentElement
+      let resizeEvt = 'orientationchange' in win ? 'orientationchange' : 'resize'
+      let recalc = function () {
+        let clientWidth = docEl.clientWidth
+        let clientHeight = docEl.clientHeight - 48
+        // if (clientWidth === undefined || clientHeight === undefined) return
+        docEl.style.fontSize = clientHeight / 7 + 'px'
+        console.log(docEl.style.fontSize)
+      }
+      // if (doc.addEventListener === undefined) return
+      win.addEventListener(resizeEvt, recalc, false)
+      doc.addEventListener('DOMContentLoaded', recalc, false)
+    })(document, window)
+  }
+}
 </script>
 
 <style lang="less">
-@import (css) url('https://fonts.googleapis.com/css?family=Source+Code+Pro');
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: initial;
-}
-
-html, body {
-  height: 100%;
-}
-
-body {
-  background: radial-gradient(ellipse at center,#f5f5f5 0,hsla(0,0%,90%,.85) 100%);
-  background-position: center;
-  display: flex;
-  font-family: 'Source Code Pro', Courier, monospace;;
-  justify-content: center;
-  text-align: center;
-
-  &.darwin {
-    &:not(.fullscreen) {
-      // make room for the traffic lights
-      .chrome-tabs {
-        padding-left: 70px;
-      }
-    }
-
-    #chrome-tabs-shell {
-      height: 38px;
-      padding-right: 26px;
-      -webkit-app-region: drag;
-
-      .chrome-tab {
-        top: 7px;
-      }
-    }
+  @import (css) url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
+  * {
+    margin: 0;
+    padding: 0;
   }
-}
+  html, body {
+    font-size: 37px;
+    height: 100%;
+    width: 100%;
+  }
+  #app {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    /* color: #2c3e50; */
+    /* background: #2c3e50; */
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
 </style>
