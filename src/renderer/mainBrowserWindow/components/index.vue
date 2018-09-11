@@ -91,12 +91,12 @@ export default {
     }
     .btn {
       cursor: pointer;
-      display: inline;
+      display: inline-block;
       font-size: 20px;
       background: rgb(255, 255, 255);
       padding: 3px 8px;
       border-radius: 5px;
-      margin: 0 3px;
+      margin: 10px 3px;
       span {
         display: inline-block;
         margin: auto;

@@ -27,6 +27,9 @@ function createHappyPlugin(id, loaders) {
   })
 }
 
+function resolve (dir) {
+  return path.join(__dirname, '..', dir)
+}
 function returnLess() {
   return [
     process.env.NODE_ENV !== 'production'
@@ -80,7 +83,7 @@ let mainBrowserWindowConfig = {
         use: {
           loader: 'happypack/loader?id=happy-eslint'
         },
-        include: [ ],
+        include: [ path.join(__dirname, '../src/main') ],
         exclude: /node_modules/
       },
       {

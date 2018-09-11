@@ -156,31 +156,32 @@ export default {
           }
         }
       }
-      console.log(result)
+      // console.log(result)
       result.push('#')
       for (let i = 0; i < result.length; i++) {
+        console.log(...output)
         if (!isNaN(result[i]) || result[i] === '²') {
           output.push(result[i])
         } else if (isp[input[input.length - 1]] < icp[result[i]]) {
           // console.log(...input)
           input.push(result[i])
         } else if (isp[input[input.length - 1]] > icp[result[i]]) {
-          if (isp[input[input.length - 1]] > icp[result[i]]) {
+          if (isp[input[input.length - 1]] > icp[result[i]] && input.length) {
             let t = input.pop()
             output.push(t)
             i--
           }
-          if (isp[input[input.length - 1]] === icp[result[i]]) {
-            input.pop()
-          }
-          if (isp[input[input.length - 1]] < icp[result[i]]) {
-            input.push(result[i])
-          }
+          // if (isp[input[input.length - 1]] === icp[result[i]]) {
+          //   input.pop()
+          // }
+          // if (isp[input[input.length - 1]] < icp[result[i]]) {
+          //   input.push(result[i])
+          // }
         } else if (isp[input[input.length - 1]] === icp[result[i]]) {
           input.pop()
         }
       }
-      // console.log(output)
+      console.log(output)
       for (let i = 0; i < output.length; i++) {
         console.log([...endResult])
         if (!isNaN(output[i])) {
@@ -268,7 +269,6 @@ export default {
     width: 100%;
     height: 72%;
     background: rgb(131, 131, 131);
-    font-size: 0.4rem;
   }
   table {
     width: 100%;
@@ -282,9 +282,11 @@ export default {
   }
   tr td {
     border: none;
+    text-align: center;
     cursor: pointer;
     width: 25%;
     background: rgb(187, 187, 187);
+    font-size: 24px;
     user-select: none;
   }
   tr td:hover {

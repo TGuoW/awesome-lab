@@ -12,7 +12,7 @@ export default {
       let docEl = doc.documentElement
       let resizeEvt = 'orientationchange' in win ? 'orientationchange' : 'resize'
       let recalc = function () {
-        let clientWidth = docEl.clientWidth
+        // let clientWidth = docEl.clientWidth
         let clientHeight = docEl.clientHeight - 48
         // if (clientWidth === undefined || clientHeight === undefined) return
         docEl.style.fontSize = clientHeight / 7 + 'px'

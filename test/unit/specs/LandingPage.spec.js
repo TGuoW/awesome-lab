@@ -1,3 +1,4 @@
+
 import Vue from 'vue';
 import LandingPage from '../../../src/renderer/mainBrowserWindow/components/LandingPage';
 
