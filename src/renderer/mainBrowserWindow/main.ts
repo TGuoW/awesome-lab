@@ -1,12 +1,15 @@
 import Vue from 'vue'
 import Electron from 'vue-electron'
 import unhandled from 'electron-unhandled'
+import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import 'modern-normalize/modern-normalize.css'
+import '../assets/js/utils'
 
 import App from './App.vue'
 import router from './router'
 
+Vue.use(ElementUI)
 Vue.use(Electron)
 unhandled()
 

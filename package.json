@@ -38,6 +38,7 @@
   "homepage": "https://github.com/LulumiProject/lulumi-browser",
   "repository": "https://github.com/LulumiProject/lulumi-browser",
   "dependencies": {
+    "axios": "^0.18.0",
     "collect.js": "^4.0.26",
     "css-element-queries": "^1.0.2",
     "electron-debug": "^2.0.0",

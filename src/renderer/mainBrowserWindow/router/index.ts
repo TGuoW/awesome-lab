@@ -10,7 +10,6 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'landing-page',
       component: require('../components/index.vue').default,
       children: [
         {

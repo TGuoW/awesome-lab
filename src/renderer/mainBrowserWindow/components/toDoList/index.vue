@@ -1,94 +1,102 @@
 <template>
-  <div class="flex">
-    <div class="aside">
-      <div class="icon-add-50"></div>
-    </div>
-    <div class="main">
-      <div class="items-list">
-        <ul>
-          <li v-for="(item, index) in items" :key="index">
-            <p>
-              <span>{{item.time}}</span>
-              <span>{{item.place}}</span>
-            </p>
-            <p>{{item.thing}}</p>
-          </li>
-        </ul>
+<div>
+  <el-row class="tac flex">
+    <el-col style="width: 180px">
+      <el-menu
+        default-active="0"
+        @select="select"
+        class="el-menu-vertical-demo left">
+        <el-menu-item v-for="(item, index) in items" :key="index" :index="index.toString()">
+          <span slot="title">{{item.title}}</span>
+        </el-menu-item>
+        <el-button style="margin-left: 20px;" type="text" @click="dialogFormVisible = true">新建事项</el-button>
+      </el-menu>
+    </el-col>
+    <el-col class="main left">
+      <mycard :todo="items[index]"></mycard>
+    </el-col>
+
+    <el-dialog style="text-align:left" title="事项信息" :visible.sync="dialogFormVisible">
+      <el-form :model="form">
+        <el-form-item label="活动名称" :label-width="formLabelWidth">
+          <el-input v-model="form.name" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="活动区域" :label-width="formLabelWidth">
+          <el-select v-model="form.region" placeholder="请选择活动区域">
+            <el-option label="区域一" value="shanghai"></el-option>
+            <el-option label="区域二" value="beijing"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
       </div>
-    </div>
-  </div>
+    </el-dialog>
+  </el-row>
+</div>
 </template>
 
 <script>
-export default {
-  data () {
-    return {
-      items: [
-        {
-          time: 'aaa',
-          thing: 'ddd',
-          place: 'sss'
-        }
-      ]
+  import mycard from './my-card'
+  export default {
+    data () {
+      return {
+        items: [],
+        index: 0,
+        dialogTableVisible: false,
+        dialogFormVisible: false,
+        form: {
+          name: '',
+          region: '',
+          date1: '',
+          date2: '',
+          delivery: false,
+          type: [],
+          resource: '',
+          desc: ''
+        },
+        formLabelWidth: '120px'
+      }
+    },
+    components: {
+      mycard
+    },
+    mounted () {
+      let config = {
+        method: 'GET'
+      }
+      let self = this
+      this.$http('/getToDoList', config).then((res) => {
+        self.items = res.data
+      })
+    },
+    methods: {
+      select (index, indexPath) {
+        this.index = index
+      }
     }
   }
-}
 </script>
 
 <style lang="scss" scoped>
+  .left {
+    text-align: left;
+  }
   .flex {
     // position: relative;
     // background: rgb(161, 61, 61);
     display: flex;
-    flex-flow: row;
-    // align-items: flex-start;
+    flex-direction: row;
+    align-items: flex-start;
     width: 100vw;
-    height: 100vh;
-  }
-  .aside {
-    height: 100%;
-    width: 48px;
-    background: rgb(15, 23, 141);
-    border-right: 1px solid grey;
-    .icon-add-50{
-      position: relative;
-      box-sizing: border-box;
-      width: 48px;
-      height: 48px;
-      cursor: pointer;
-      &:hover {
-        background: rgb(85, 85, 85);
-      }
-      // border: 2px dashed #9a9ba3;
-      // border-radius: 50%;
-    }
-    .icon-add-50:before{
-      content: '';
-      position: absolute;
-      width: 30px;
-      height: 2px;
-      left: 50%;
-      top: 50%;
-      margin-left: -15px;
-      margin-top: -1px;
-      background-color: #aaabb2;
-    }
-    .icon-add-50:after{
-      content: '';
-      position: absolute;
-      width: 2px;
-      height: 30px;
-      left: 50%;
-      top: 50%;
-      margin-left: -1px;
-      margin-top: -15px;
-      background-color: #aaabb2;
-    }
+    height: auto;
   }
   .main {
     flex: 1;
-    // width: 100%;
-    // height: 100%;
+    font-size: 18px;
+    height: 100%;
+    overflow-y: scroll;
     // background: #000;
   }
   .items-list {
@@ -105,4 +113,7 @@ export default {
       }
     }
   }
+
+
+
 </style>

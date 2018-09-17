@@ -7,6 +7,14 @@
 <script>
 export default {
   props: ['inputText']
+  // mounted () {
+  //   let url = '/getToDoList'
+  //   this.$http(url).then((res) => {
+  //     console.log(res)
+  //   }).catch((error) => {
+  //     console.error(error)
+  //   })
+  // }
 }
 </script>
 

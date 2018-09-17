@@ -133,12 +133,13 @@ export default {
       }
     },
     solve () {
-      let str = this.inputText.split('')
+      let str = this.inputText
       let endResult = this.solveString(str)
-      this.outputText = [this.inputText + '=', endResult[0]]
+      this.outputText = [this.inputText + '=', endResult]
       this.inputText = '0'
     },
     solveString (res) {
+      res = res.split('')
       let output = []
       let input = ['#']
       let isp = { '#': 0, '(': 1, '×': 5, '÷': 5, '+': 3, '-': 3, ')': 6, '√': 0.5 }
@@ -159,7 +160,6 @@ export default {
       // console.log(result)
       result.push('#')
       for (let i = 0; i < result.length; i++) {
-        console.log(...output)
         if (!isNaN(result[i]) || result[i] === '²') {
           output.push(result[i])
         } else if (isp[input[input.length - 1]] < icp[result[i]]) {
@@ -249,7 +249,7 @@ export default {
         // console.log([...endResult])
       }
       // console.log(endResult)
-      return endResult
+      return endResult[0]
     }
   },
   // props: ['inputText'],

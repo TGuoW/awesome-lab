@@ -114,6 +114,7 @@ export default {
   }
   .main {
     flex: 1;
+    height: calc(100% - 48px);
     background: #fff;
   }
 </style>
