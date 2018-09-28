@@ -6,19 +6,19 @@
 
 <script>
 export default {
-  name: 'lulumi-browser',
+  name: 'awesomeLab',
   mounted () {
+    let self = this;
     (function (doc, win) {
       let docEl = doc.documentElement
       let resizeEvt = 'orientationchange' in win ? 'orientationchange' : 'resize'
       let recalc = function () {
-        // let clientWidth = docEl.clientWidth
         let clientHeight = docEl.clientHeight - 48
-        // if (clientWidth === undefined || clientHeight === undefined) return
         docEl.style.fontSize = clientHeight / 7 + 'px'
-        console.log(docEl.style.fontSize)
+        self.$store.commit('setWidth', docEl.clientWidth)
+        self.$store.commit('setHeight', docEl.clientHeight)
+        // console.log(self.$store.state.Screen.clientWidth, self.$store.state.Screen.clientHeight)
       }
-      // if (doc.addEventListener === undefined) return
       win.addEventListener(resizeEvt, recalc, false)
       doc.addEventListener('DOMContentLoaded', recalc, false)
     })(document, window)

@@ -8,6 +8,7 @@ import '../assets/js/utils'
 
 import App from './App.vue'
 import router from './router'
+import store from '../../shared/store/mainStore'
 
 Vue.use(ElementUI)
 Vue.use(Electron)
@@ -22,6 +23,7 @@ if (process.env.NODE_ENV === 'production') {
 
 new Vue({
   router,
+  store,
   components: { App },
   render (h) {
     return h('App')

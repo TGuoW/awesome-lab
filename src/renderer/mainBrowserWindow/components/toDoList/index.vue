@@ -98,6 +98,14 @@
     height: 100%;
     overflow-y: scroll;
     // background: #000;
+    &::-webkit-scrollbar {
+      width: 8px;
+      padding-right: 10px;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 4px;
+      background-color: #e1e1e2;
+    }
   }
   .items-list {
     text-align: left;
