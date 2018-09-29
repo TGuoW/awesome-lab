@@ -20,7 +20,8 @@ export default {
       routerArr: [
         'editor',
         'calculator',
-        'toDoList'
+        'toDoList',
+        'ts2048'
       ],
       radio: '1'
     }
