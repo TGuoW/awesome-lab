@@ -1,12 +1,13 @@
 import Cube from './Cube'
 import Event from './Event'
+import Score from './Score'
 
 let deepClone = function (matrix) {
   let newMartrix: any[][] = []
   for (let i = 0; i < matrix.length; i++) {
     newMartrix[i] = []
     for (let j = 0; j < matrix[i].length; j++) {
-      newMartrix[i][j] = matrix[i][j]
+      newMartrix[i][j] = matrix[i][j].value
     }
   }
   return newMartrix
@@ -16,7 +17,7 @@ let compareMatrix = function (matrix1, matrix2) {
   let flag = true
   for (let i = 0; i < matrix1.length; i++) {
     for (let j = 0; j < matrix1[i].length; j++) {
-      if (matrix1[i][j].value !== matrix2[i][j].value) {
+      if (matrix1[i][j] !== matrix2[i][j].value) {
         flag = false
       }
     }
@@ -26,8 +27,13 @@ let compareMatrix = function (matrix1, matrix2) {
 
 class Game {
   matrix: any[][] = []
+  matrixAttr: any = {
+    score: 0
+  }
   event
-  constructor (obj) {
+  score
+  Vue
+  constructor (obj, Vue) {
     for (let i = 0; i < obj[0]; i++) {
       this.matrix.push([])
       for (let j = 0; j < obj[1]; j++) {
@@ -35,9 +41,15 @@ class Game {
       }
     }
     this.event = new Event(this.matrix)
+    this.score = new Score(this.matrixAttr)
+    this.Vue = Vue
+    this.Vue.matrixAttr = Object.assign({}, this.matrixAttr)
   }
   render () {
     return this.matrix
+  }
+  renderScore () {
+    return this.matrixAttr
   }
   start () {
     let self = this
@@ -59,6 +71,9 @@ class Game {
           break
       }
       if (!compareMatrix(matrix, self.matrix)) {
+        let newScore = self.score.render(matrix, self.matrix)
+        self.matrixAttr = Object.assign({}, self.matrixAttr, newScore)
+        self.Vue.matrixAttr = Object.assign({}, self.matrixAttr, newScore)
         self.addCube()
       }
     }

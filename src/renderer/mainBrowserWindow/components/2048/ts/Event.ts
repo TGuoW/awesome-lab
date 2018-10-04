@@ -20,7 +20,6 @@ let addArr = function (arr) {
     if (arr[i].value === arr[i - 1].value) {
       arr[i - 1].combine()
       arr[i].zero()
-      console.log(arr[i - 1])
       i--
     }
   }
@@ -65,7 +64,7 @@ class Event {
       this.matrix[j] = addArr(this.matrix[j])
       this.matrix.splice(j, 1, this.matrix[j])
     }
-    // console.log(this.matrix)
+
   }
   up () {
     let matrix = reverseMatrix(this.matrix)
