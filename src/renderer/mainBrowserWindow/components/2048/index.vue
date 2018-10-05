@@ -5,10 +5,8 @@
     </div>
     <div class="table">
       <div class="box">
-        <div v-for="(item, index) in 4" :key="item">
-          <div v-for="(i, o) in 4" :key="i" :class="'cube position' + index + '-' + o + ' ' + matrix[index][o].class">
-            {{ matrix[index][o].value | capitalize }}
-          </div>
+        <div v-for="(item, index) in cubeQueue" v-if="item.value" :key="index" :class="'cube position' + item.nowPos[0] + '-' + item.nowPos[1] + ' ' + item.class">
+          {{ item.value | capitalize }}
         </div>
       </div>
     </div>
@@ -23,7 +21,8 @@ export default Vue.extend({
     return {
       initArr: [4, 4],
       matrix: Array<Array<any>>(),
-      matrixAttr: {}
+      matrixAttr: {},
+      cubeQueue: Array<any>()
     }
   },
   filters: {
@@ -79,6 +78,7 @@ export default Vue.extend({
       background: rgb(223, 199, 93);
       border-radius: 8px;
       text-align: center;
+      transition: all 0.2s;
       div {
         position: absolute;
         width: 100%;

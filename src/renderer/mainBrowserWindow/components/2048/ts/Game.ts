@@ -25,17 +25,32 @@ let compareMatrix = function (matrix1, matrix2) {
   return flag
 }
 
+let setCubePos = function (matrix, queue) {
+  for (let i = 0; i < matrix.length; i++) {
+    for (let j = 0; j < matrix[i].length; j++) {
+      matrix[i][j].setPos([i, j])
+    }
+  }
+  for (let i = 0; i < queue.length; i++) {
+    if (queue[i].static === 'die') {
+      let pos = queue[i].dieCube.nowPos
+      queue[i].setPos([...pos])
+    }
+  }
+}
+
 class Game {
   matrix: any[][] = []
   matrixAttr: any = {
     score: 0
   }
+  cubeQueue: Cube[] = []
   event
   score
   Vue
   constructor (obj, Vue) {
     for (let i = 0; i < obj[0]; i++) {
-      this.matrix.push([])
+      this.matrix.push(new Array(4))
       for (let j = 0; j < obj[1]; j++) {
         this.matrix[i][j] = new Cube(0)
       }
@@ -56,6 +71,9 @@ class Game {
     this.addCube()
     document.onkeydown = function (e) {
       let matrix = deepClone(self.matrix)
+      // self.cubeQueue = self.cubeQueue.filter(item => {
+      //   return item.static !== 'die'
+      // })
       switch (e.key) {
         case 'ArrowLeft':
           self.event.left()
@@ -72,8 +90,10 @@ class Game {
       }
       if (!compareMatrix(matrix, self.matrix)) {
         let newScore = self.score.render(matrix, self.matrix)
+        setCubePos(self.matrix, self.cubeQueue)
         self.matrixAttr = Object.assign({}, self.matrixAttr, newScore)
         self.Vue.matrixAttr = Object.assign({}, self.matrixAttr, newScore)
+        self.Vue.cubeQueue = self.cubeQueue
         self.addCube()
       }
     }
@@ -86,8 +106,8 @@ class Game {
     let newCube = new Cube(value)
     let matrix = [...this.matrix]
     let tmp: Array<Object> = []
-    for (let i = 0; i < matrix.length; i++) {
-      for (let j = 0; j < matrix[i].length; j++) {
+    for (let i = 0; i < 4; i++) {
+      for (let j = 0; j < 4; j++) {
         if (matrix[i][j].value === 0) {
           tmp.push({
             x: i,
@@ -102,6 +122,17 @@ class Game {
     }
     let index = Math.floor(Math.random() * tmp.length)
     this.matrix[tmp[index]['x']][tmp[index]['y']] = newCube
+    let flag = false
+    for (let i = 0; i < this.cubeQueue.length; i++) {
+      if (this.cubeQueue[i].nowPos[0] === tmp[index]['x'] && this.cubeQueue[i].nowPos[1] === tmp[index]['y']) {
+        this.cubeQueue[i] = newCube
+        flag = true
+      }
+    }
+    if (!flag) {
+      this.cubeQueue.push(newCube)
+    }
+    newCube.setPos([tmp[index]['x'], tmp[index]['y']])
     this.matrix.splice(tmp[index]['x'], 1, this.matrix[tmp[index]['x']])
     return
   }

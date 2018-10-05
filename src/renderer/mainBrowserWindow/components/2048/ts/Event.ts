@@ -18,8 +18,8 @@ let addArr = function (arr) {
   arr = pushArr(arr)
   for (let i = arr.length - 1; i > 0; i--) {
     if (arr[i].value === arr[i - 1].value) {
-      arr[i - 1].combine()
-      arr[i].zero()
+      arr[i].combine()
+      arr[i - 1].zero(arr[i])
       i--
     }
   }
