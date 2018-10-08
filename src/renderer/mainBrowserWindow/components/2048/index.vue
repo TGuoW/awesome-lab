@@ -5,7 +5,7 @@
     </div>
     <div class="table">
       <div class="box">
-        <div v-for="(item, index) in cubeQueue" v-if="item.value" :key="index" :class="'cube position' + item.nowPos[0] + '-' + item.nowPos[1] + ' ' + item.class">
+        <div v-for="(item, index) in cubeQueue" :key="index" :class="'cube position' + item.nowPos[0] + '-' + item.nowPos[1] + ' ' + item.class">
           {{ item.value | capitalize }}
         </div>
       </div>
@@ -78,7 +78,7 @@ export default Vue.extend({
       background: rgb(223, 199, 93);
       border-radius: 8px;
       text-align: center;
-      transition: all 0.2s;
+      transition: all 0.15s;
       div {
         position: absolute;
         width: 100%;
@@ -140,15 +140,19 @@ export default Vue.extend({
     }
     .position0-0 {
       left: 0%;
+      top: 0%;
     }
     .position0-1 {
       left: 26%;
+      top: 0%;
     }
     .position0-2 {
       left: 52%;
+      top: 0%;
     }
     .position0-3 {
       left: 78%;
+      top: 0%;
     }
     .position1-0 {
       top: 26%;

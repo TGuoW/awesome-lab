@@ -90,6 +90,7 @@ class Game {
       }
       if (!compareMatrix(matrix, self.matrix)) {
         let newScore = self.score.render(matrix, self.matrix)
+        console.log(self.matrix)
         setCubePos(self.matrix, self.cubeQueue)
         self.matrixAttr = Object.assign({}, self.matrixAttr, newScore)
         self.Vue.matrixAttr = Object.assign({}, self.matrixAttr, newScore)
@@ -134,6 +135,7 @@ class Game {
     }
     newCube.setPos([tmp[index]['x'], tmp[index]['y']])
     this.matrix.splice(tmp[index]['x'], 1, this.matrix[tmp[index]['x']])
+    this.Vue.cubeQueue = this.cubeQueue
     return
   }
 }
