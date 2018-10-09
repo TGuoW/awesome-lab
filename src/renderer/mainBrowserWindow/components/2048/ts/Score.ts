@@ -1,4 +1,4 @@
-let diffObj = function(oldObj, newObj) {
+let diffObj = function (oldObj, newObj) {
   let score = 0
   for (let i = 17; i > 1; i--) {
     let value = Math.pow(2, i)
@@ -30,9 +30,10 @@ class Score {
     this.matrixAttr = matrixAttr
   }
   render (oldMatrix, newMatrix) {
-    let oldObj = {}, newObj = {}
-    oldMatrix.forEach(element => {
-      element.forEach(item => {
+    let oldObj = {}
+    let newObj = {}
+    oldMatrix.forEach((element) => {
+      element.forEach((item) => {
         if (oldObj[item]) {
           oldObj[item]++
         } else {
@@ -40,8 +41,8 @@ class Score {
         }
       })
     })
-    newMatrix.forEach(element => {
-      element.forEach(item => {
+    newMatrix.forEach((element) => {
+      element.forEach((item) => {
         if (newObj[item.value]) {
           newObj[item.value]++
         } else {
@@ -50,7 +51,7 @@ class Score {
       })
     })
     this.score += diffObj(oldObj, newObj)
-    this.matrixAttr = Object.assign({}, this.matrixAttr, {score: this.score})
+    this.matrixAttr = Object.assign({}, this.matrixAttr, { score: this.score })
     return this.matrixAttr
   }
 }
