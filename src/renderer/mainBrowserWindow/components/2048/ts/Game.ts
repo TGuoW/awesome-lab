@@ -2,22 +2,14 @@ import Cube from './Cube'
 import Event from './Event'
 import Score from './Score'
 
-let deepClone = function (matrix) {
-  let newMartrix: any[][] = []
-  for (let i = 0; i < matrix.length; i++) {
-    newMartrix[i] = []
-    for (let j = 0; j < matrix[i].length; j++) {
-      newMartrix[i][j] = matrix[i][j].value
-    }
-  }
-  return newMartrix
-}
+let deepClone = (matrix) => matrix.map((ele) => ele.slice(0))
 
 let compareMatrix = function (matrix1, matrix2) {
   let flag = true
   for (let i = 0; i < matrix1.length; i++) {
     for (let j = 0; j < matrix1[i].length; j++) {
-      if (matrix1[i][j] !== matrix2[i][j].value) {
+      if (matrix1[i][j].value !== matrix2[i][j].value) {
+        console.log(i, j)
         flag = false
       }
     }
@@ -31,12 +23,12 @@ let setCubePos = function (matrix, queue) {
       matrix[i][j].setPos([i, j])
     }
   }
-  for (let i = 0; i < queue.length; i++) {
-    if (queue[i].static === 'die') {
-      let pos = queue[i].dieCube.nowPos
-      queue[i].setPos([...pos])
+  queue.forEach((element) => {
+    if (element.static === 'die') {
+      let pos = element.dieCube.nowPos
+      element.setPos([...pos])
     }
-  }
+  })
 }
 
 let pushArr = function (arr) {
@@ -111,7 +103,7 @@ class Game {
         this.matrix[i][j] = new Cube(0)
       }
     }
-    this.event = new Event(this.matrix)
+    this.event = new Event()
     this.score = new Score(this.matrixAttr)
     this.Vue = Vue
     this.Vue.isShowEnd = false
@@ -128,21 +120,18 @@ class Game {
     this.addCube()
     document.onkeydown = function (e) {
       let matrix = deepClone(self.matrix)
-      // self.cubeQueue = self.cubeQueue.filter(item => {
-      //   return item.static !== 'die'
-      // })
       switch (e.key) {
         case 'ArrowLeft':
-          self.event.left()
+          self.matrix = self.event.left(self.matrix)
           break
         case 'ArrowUp':
-          self.event.up()
+          self.matrix = self.event.up(self.matrix)
           break
         case 'ArrowRight':
-          self.event.right()
+          self.matrix = self.event.right(self.matrix)
           break
         case 'ArrowDown':
-          self.event.down()
+          self.matrix = self.event.down(self.matrix)
           break
       }
       if (!compareMatrix(matrix, self.matrix)) {
