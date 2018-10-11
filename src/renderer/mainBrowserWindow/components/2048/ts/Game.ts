@@ -1,15 +1,15 @@
 import Cube from './Cube'
 import Event from './Event'
 import Score from './Score'
+import MatrixContainer from './MatrixContainer'
 
-let deepClone = (matrix) => matrix.map((ele) => ele.slice(0))
+let deepClone = (matrix) => matrix.map((ele) => ele.map((i) => i.value))
 
 let compareMatrix = function (matrix1, matrix2) {
   let flag = true
   for (let i = 0; i < matrix1.length; i++) {
     for (let j = 0; j < matrix1[i].length; j++) {
-      if (matrix1[i][j].value !== matrix2[i][j].value) {
-        console.log(i, j)
+      if (matrix1[i][j] !== matrix2[i][j].value) {
         flag = false
       }
     }
@@ -31,60 +31,28 @@ let setCubePos = function (matrix, queue) {
   })
 }
 
-let pushArr = function (arr) {
-  let newArr: any[] = []
-  arr.forEach((element) => {
-    if (element.value) {
-      newArr.push(element)
-    }
-  })
-  let zeroNumber = arr.length - newArr.length
-  while (zeroNumber > 0) {
-    newArr.unshift(new Cube(0))
-    zeroNumber--
-  }
-  return newArr
-}
-
-let reverseMatrix = function (matrix) {
-  let newMartrix: Cube[][] = []
+let checkMatrix = function (matrix) {
   for (let i = 0; i < matrix.length; i++) {
-    newMartrix[i] = []
-    for (let j = 0; j < matrix[i].length; j++) {
-      newMartrix[i][j] = matrix[i][j]
+    for (let j = 0; j < matrix[i].length - 1; j++) {
+      if (matrix[i][j].value === matrix[i][j + 1].value && matrix[i][j].value !== 0) {
+        return true
+      }
     }
   }
-  for (let i = 0; i < matrix.length; i++) {
-    for (let j = 0; j < matrix[i].length; j++) {
-      newMartrix[j][i] = matrix[i][j]
-    }
-  }
-  return newMartrix
+  return false
 }
 
 let checkIsEnd = function (matrix, extraCubeNumber) {
-  if (extraCubeNumber > 1) {
-    return true
-  }
-  let flag = false
-  for (let i = 0; i < matrix.length; i++) {
-    let arr = pushArr(matrix[i])
-    for (let j = 0; j < arr.length - 1; j++) {
-      if (arr[j].value === arr[j + 1].value && arr[j].value !== 0) {
-        return true
-      }
+  try {
+    if (extraCubeNumber > 1) {
+      return true
     }
+    let matrix1 = new MatrixContainer(matrix).push().end()
+    let matrix2 = new MatrixContainer(matrix).reverseMatrix().push().end()
+    return checkMatrix(matrix1) || checkMatrix(matrix2)
+  } catch (e) {
+    throw new Error(e)
   }
-  let newMatrix = reverseMatrix(matrix)
-  for (let i = 0; i < newMatrix.length; i++) {
-    let arr = pushArr(newMatrix[i])
-    for (let j = 0; j < arr.length - 1; j++) {
-      if (arr[j].value === arr[j + 1].value && arr[j].value !== 0) {
-        return true
-      }
-    }
-  }
-  return flag
 }
 
 class Game {
@@ -109,12 +77,6 @@ class Game {
     this.Vue.isShowEnd = false
     this.Vue.matrixAttr = Object.assign({}, this.matrixAttr)
   }
-  render () {
-    return this.matrix
-  }
-  renderScore () {
-    return this.matrixAttr
-  }
   start () {
     let self = this
     this.addCube()
@@ -137,9 +99,7 @@ class Game {
       if (!compareMatrix(matrix, self.matrix)) {
         let newScore = self.score.render(matrix, self.matrix)
         setCubePos(self.matrix, self.cubeQueue)
-        self.matrixAttr = Object.assign({}, self.matrixAttr, newScore)
         self.Vue.matrixAttr = Object.assign({}, self.matrixAttr, newScore)
-        self.Vue.cubeQueue = self.cubeQueue
         setTimeout(() => {
           self.addCube()
         }, 150)
@@ -148,35 +108,51 @@ class Game {
   }
   end () {
     this.Vue.isShowEnd = true
+    console.log('end')
     document.onkeydown = null
   }
   addCube () {
+    console.log('add')
     let value: number = Math.random() > 0.5 ? 4 : 2
     let newCube = new Cube(value)
     let matrix = [...this.matrix]
     let tmp: Array<Object> = []
-    for (let i = 0; i < 4; i++) {
-      for (let j = 0; j < 4; j++) {
-        if (matrix[i][j].value === 0) {
-          tmp.push({
-            x: i,
-            y: j
-          })
+    matrix.forEach((element, index) => {
+      element.forEach((item, idx) => {
+        if (item.value === 0) {
+          tmp.push({ x: index, y: idx })
         }
+      })
+    })
+    this.cubeQueue.forEach((element) => {
+      if (element.static === 'die') {
+        let pos: number[] = element.nowPos
+        element = new Cube(0)
+        element.setPos(pos)
       }
-    }
+    })
     let index = Math.floor(Math.random() * tmp.length)
     this.matrix[tmp[index]['x']][tmp[index]['y']] = newCube
+
     let flag = false
     for (let i = 0; i < this.cubeQueue.length; i++) {
-      if (this.cubeQueue[i].nowPos[0] === tmp[index]['x'] && this.cubeQueue[i].nowPos[1] === tmp[index]['y']) {
-        this.cubeQueue[i] = newCube
+      if (this.cubeQueue[i].static === 'die') {
+        this.cubeQueue[i].setPos([tmp[index]['x'], tmp[index]['y']])
+        this.cubeQueue.splice(i, 1, newCube)
         flag = true
+        break
+      }
+      if (this.cubeQueue[i].nowPos[0] === tmp[index]['x'] && this.cubeQueue[i].nowPos[1] === tmp[index]['y']) {
+        console.log('success')
+        this.cubeQueue.splice(i, 1, newCube)
+        flag = true
+        break
       }
     }
     if (!flag) {
       this.cubeQueue.push(newCube)
     }
+
     newCube.setPos([tmp[index]['x'], tmp[index]['y']])
     this.matrix.splice(tmp[index]['x'], 1, this.matrix[tmp[index]['x']])
     this.Vue.cubeQueue = this.cubeQueue

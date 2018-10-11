@@ -89,7 +89,7 @@ export default Vue.extend({
     position: relative;
     width: 100%;
     height: 100%;
-    min-height: 420px;
+    // min-height: 420px;
     min-width: 16rem;
     background: rgb(51, 51, 51);
   }

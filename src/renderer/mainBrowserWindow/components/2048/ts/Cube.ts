@@ -4,7 +4,7 @@ class Cube {
   static: string
   prevPos: number[]
   nowPos: number[]
-  dieCube
+  dieCube: Cube
   isShow: boolean
   constructor (value) {
     this.isShow = true

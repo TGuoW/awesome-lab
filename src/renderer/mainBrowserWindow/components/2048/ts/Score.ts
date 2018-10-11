@@ -43,10 +43,12 @@ class Score {
     })
     newMatrix.forEach((element) => {
       element.forEach((item) => {
-        if (newObj[item.value]) {
-          newObj[item.value]++
-        } else {
-          newObj[item.value] = 1
+        if (item.value && item.static !== 'die') {
+          if (newObj[item.value]) {
+            newObj[item.value]++
+          } else {
+            newObj[item.value] = 1
+          }
         }
       })
     })
