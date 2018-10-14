@@ -2,18 +2,19 @@
   <div class="bg">
     <div class="btn-group">
       <btn @click="start">start</btn>
+      <btn @click="removeCube">remove{{matrixAttr.removeNumber}}</btn>
       <!-- <btn>undo</btn>
       <btn>end</btn> -->
     </div>
     <div class="table">
-      <div class="box">
+      <div class="box" @click="handleClick">
         <div v-for="item in 4">
           <div v-for="i in 4" :class="'cell position' + (item - 1) + '-' + (i - 1)"></div>
         </div>
         <div v-for="(item, index) in cubeQueue" :key="index"
           v-if="item.isShow"
           :class="'cube position' + item.nowPos[0] + '-' + item.nowPos[1] + ' ' + item.class + (item.value ? ' top-index' : '')">
-          <div>{{ item.value | capitalize }}</div>
+          <div :data-index="index">{{ item.value | capitalize }}</div>
         </div>
       </div>
     </div>
@@ -46,7 +47,8 @@ export default Vue.extend({
       matrix: Array<Array<any>>(),
       matrixAttr: {},
       cubeQueue: Array<any>(),
-      isShowEnd: false
+      isShowEnd: false,
+      isRemove: false
     }
   },
   filters: {
@@ -65,6 +67,20 @@ export default Vue.extend({
       if (this.game) {
         this.game.start()
       }
+    },
+    handleClick (e) {
+      if (!this.isRemove) {
+        return
+      }
+      let index = e.target.getAttribute('data-index')
+      if (!index) {
+        return
+      }
+      this.game.removeCube(index)
+      this.isRemove = false
+    },
+    removeCube (e) {
+      this.isRemove = true
     }
   }
 })
@@ -164,7 +180,8 @@ export default Vue.extend({
       div {
         position: absolute;
         width: 100%;
-        height: 32px;
+        height: 100%;
+        line-height: 20vh;
         right: 0;
         left: 0;
         top: 0;

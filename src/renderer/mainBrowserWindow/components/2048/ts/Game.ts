@@ -161,6 +161,9 @@ class Game {
     }
     return
   }
+  removeCube (index) {
+    this.cubeQueue[index].zero(this.cubeQueue[index])
+  }
 }
 
 export default Game
