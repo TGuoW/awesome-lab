@@ -62,11 +62,16 @@ export default Vue.extend({
   },
   methods: {
     start () {
-      let game = new Game(this.initArr, this)
+      let game = new Game(this.initArr, this.callback)
       this.game = game
       if (this.game) {
         this.game.start()
       }
+    },
+    callback (cubeQueue, matrixAttr, isShowEnd) {
+      this.cubeQueue = cubeQueue
+      this.matrixAttr = matrixAttr
+      this.isShowEnd = isShowEnd
     },
     handleClick (e) {
       if (!this.isRemove) {

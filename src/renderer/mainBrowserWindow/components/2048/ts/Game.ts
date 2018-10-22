@@ -63,8 +63,8 @@ class Game {
   cubeQueue: Cube[] = []
   event
   score
-  Vue
-  constructor (obj, Vue) {
+  callback
+  constructor (obj, callback) {
     for (let i = 0; i < obj[0]; i++) {
       this.matrix.push(new Array(4))
       for (let j = 0; j < obj[1]; j++) {
@@ -73,9 +73,8 @@ class Game {
     }
     this.event = new Event()
     this.score = new Score(this.matrixAttr)
-    this.Vue = Vue
-    this.Vue.isShowEnd = false
-    this.Vue.matrixAttr = Object.assign({}, this.matrixAttr)
+    this.callback = callback
+    this.callback(this.cubeQueue, this.matrixAttr, false)
   }
   start () {
     let self = this
@@ -99,7 +98,8 @@ class Game {
       if (!compareMatrix(matrix, self.matrix)) {
         let newScore = self.score.render(matrix, self.matrix)
         setCubePos(self.matrix, self.cubeQueue)
-        self.Vue.matrixAttr = Object.assign({}, self.matrixAttr, newScore)
+        self.matrixAttr = Object.assign({}, self.matrixAttr, newScore)
+        self.callback(self.cubeQueue, self.matrixAttr, false)
         setTimeout(() => {
           self.addCube()
         }, 150)
@@ -107,7 +107,7 @@ class Game {
     }
   }
   end () {
-    this.Vue.isShowEnd = true
+    this.callback(this.cubeQueue, this.matrixAttr, true)
     console.log('end')
     document.onkeydown = null
   }
@@ -155,7 +155,7 @@ class Game {
 
     newCube.setPos([tmp[index]['x'], tmp[index]['y']])
     this.matrix.splice(tmp[index]['x'], 1, this.matrix[tmp[index]['x']])
-    this.Vue.cubeQueue = this.cubeQueue
+    this.callback(this.cubeQueue, this.matrixAttr, false)
     if (!checkIsEnd(this.matrix, tmp.length)) {
       this.end()
     }

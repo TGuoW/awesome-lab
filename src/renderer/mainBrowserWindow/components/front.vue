@@ -44,6 +44,7 @@ export default {
     margin-top: 48px;
   }
   .item {
+    list-style: none;
     text-align: left;
     cursor: pointer;
     padding: 0 16px;
